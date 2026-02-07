@@ -1,6 +1,11 @@
+//import and setup 
+/* The static import declaration is used to import read-only live bindings 
+which are exported by another module. 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#named_import
+*/
 import express from "express";
 import http from "http";
-import { Server } from "socket.io";
+import { Server } from "socket.io"; // import
 
 const app = express();
 const server = http.createServer(app);

@@ -20,6 +20,7 @@ let imageFilePerception = [
   // "perception008.gif",
 ];
 
+
 const socket = io();
 
 let me;
@@ -164,6 +165,11 @@ function usersTouchingPerceptions() {
 
 // SOCKET EVENTS
 
+/*
+this part is where the connection happens between this sketch.js and app.js 
+which then will create a real time connection
+
+*/
 // initial full state
 socket.on("init", (data) => {
   me = data.id;
