@@ -1,19 +1,27 @@
-//import and setup 
+//import and setup
 /* The static import declaration is used to import read-only live bindings 
 which are exported by another module. 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#named_import
 */
-import express from "express";
-import http from "http";
-import { Server } from "socket.io"; // import
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
-const port = process.env.PORT || 3333;
+//bringing in the libraries
+import express from "express"; //static files
+import http from "http"; //socket.io and http server
+import { Server } from "socket.io"; // create a websocket server
 
-app.use(express.static("public"));
+const app = express(); //express app
+const server = http.createServer(app); //http server that uses app to ahnle http requests
+const io = new Server(server); //socket.io server that attaches to the http erver to share the same port
+const port = process.env.PORT || 3333; // this port is where the erver will listen on
 
+/*this makes Express serve eveerything inside the /public folder as a static files
+To serve static files such as images, CSS files, and JavaScript files, 
+use the express.static built-in middleware function in Express.
+https://expressjs.com/en/starter/static-files.html 
+ */
+app.use(express.static("public")); //the name of the folder eall the codes are in
+
+//start the http+socket.io server
 server.listen(port, () => {
   console.log("listening on:", port);
 });

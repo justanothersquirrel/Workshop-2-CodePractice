@@ -4,7 +4,7 @@ class perception {
     this.velocity = p5.Vector.random2D();
     this.acceleration = createVector(-1, 0);
     this.img = img;
-    this.size = 75;
+    this.size = 100;
     this.maxspeed = 10;
     this.maxforce = 0.05; // steering force
     this.r = size / 3; // radius for separation
