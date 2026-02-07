@@ -1,7 +1,12 @@
 # Workshop-2-CodePractice
 
 This code was made to practice the conenction between server and sketch code. looking at Node.js Socket.io JavaScript.
+
 This sketch is implemented from rebecca-aston's tutorials and lab workshops. The original code can be found in the package mouse-party-main.zip.
+
+# Access the sketch on this link
+
+https://workshop-2-codepractice.onrender.com
 
 # Diary & over view
 
