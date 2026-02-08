@@ -136,7 +136,6 @@ function mouseMoved() {
   });
 }
 
-
 function checkMyDistance() {
   let distanceFromCenter = dist(mouseX, mouseY, width / 2, height / 2);
   if (distanceFromCenter < (experienceState.partyradius * width) / 2) {
