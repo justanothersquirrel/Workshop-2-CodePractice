@@ -15,7 +15,7 @@ let imageFilePerception = [
 
 const socket = io();
 
-let me = neull;
+let me = null;
 
 // Mirror of experience state on client side
 let experienceState = {
@@ -59,7 +59,7 @@ function setup() {
 function draw() {
   background(200);
 
-  // 🔴 Use the SHARED state from the server:
+  // Use the SHARED state from the server:
   const isParty = experienceState.party;
 
   if (isParty) {
@@ -180,14 +180,14 @@ function mouseMoved() {
 
   lastSent = now;
 
-  // 🔴 Local calculation: is ANY avatar touching a perception here?
+  // Local calculation: is ANY avatar touching a perception here?
   const touching = usersTouchingPerceptions();
 
   socket.emit("move", {
     x: mouseX / width,
     y: mouseY / height,
     inRadius: checkMyDistance(),
-    touching: touching, // 🔴 send to server
+    touching: touching, // send to server
   });
 }
 

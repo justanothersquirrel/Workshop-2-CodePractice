@@ -47,7 +47,8 @@ io.on("connection", (socket) => {
   console.log("user connected:", socket.id);
 
   // Create user object when joined
-  experienceState.users[socket.id] = { // adds a new entry for this new socket
+  experienceState.users[socket.id] = {
+    // adds a new entry for this new socket
     x: 0,
     y: 0,
     inRadius: false,
