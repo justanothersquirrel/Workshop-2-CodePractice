@@ -20,7 +20,6 @@ let imageFilePerception = [
   // "perception008.gif",
 ];
 
-
 const socket = io();
 
 let me;
@@ -96,112 +95,139 @@ function draw() {
 
   // perception objects calling
   for (let per of perceptionsArray) {
-    per.repelFrom(mouseX, mouseY, 50, 2); // repel from my mouse
-    per.separate(perceptionsArray); // steer away from neighbors
+    // repel from ALL users (me + others)
+    for (let id in experienceState.users) {
+      const u = experienceState.users[id];
+
+      // convert normalized coords to pixels for others
+      let ux, uy;
+      if (id === me) {
+        // my avatar is at my mouse
+        ux = mouseX;
+        uy = mouseY;
+      } else {
+        ux = u.x * width;
+        uy = u.y * height;
+      }
+
+      per.repelFrom(ux, uy, 50, 2);
+    }
+
+    per.separate(perceptionsArray);
     per.update();
     per.borders();
     per.display();
   }
-}
 
-// SEND MOVEMENT (throttled, i.e. send less often)
-//maybe this is where i need toreplace the circles with the drawings
-function mouseMoved() {
-  let now = millis();
-  if (now - lastSent < SEND_RATE) {
-    return;
-  }
+  //   // perception objects calling
+  //   for (let per of perceptionsArray) {
+  //     per.repelFrom(mouseX, mouseY, 50, 2); // repel from my mouse
+  //     per.separate(perceptionsArray); // steer away from neighbors
+  //     per.update();
+  //     per.borders();
+  //     per.display();
+  //   }
+  // }
 
-  lastSent = now;
-
-  socket.emit("move", {
-    x: mouseX / width,
-    y: mouseY / height,
-    inRadius: checkMyDistance(),
-  });
-}
-
-function checkMyDistance() {
-  let distanceFromCenter = dist(mouseX, mouseY, width / 2, height / 2);
-  if (distanceFromCenter < (experienceState.partyradius * width) / 2) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function usersTouchingPerceptions() {
-  // how close counts as "touching" (in pixels)
-  let touchRadius = 50;
-
-  // loop over all perception objects
-  for (let per of perceptionsArray) {
-    let px = per.position.x;
-    let py = per.position.y;
-
-    // 1) check ME (local user, uses mouseX/mouseY)
-    let dMe = dist(mouseX, mouseY, px, py);
-    if (dMe < touchRadius) {
-      return true; // someone is touching, we can stop
+  // SEND MOVEMENT (throttled, i.e. send less often)
+  //maybe this is where i need toreplace the circles with the drawings
+  function mouseMoved() {
+    let now = millis();
+    if (now - lastSent < SEND_RATE) {
+      return;
     }
-    // 2) check OTHER users (positions from server)
-    for (let id in experienceState.users) {
-      if (id === me) continue; // already checked myself
 
-      const u = experienceState.users[id];
-      const ux = u.x * width; // normalized -> pixels
-      const uy = u.y * height;
+    lastSent = now;
 
-      let d = dist(ux, uy, px, py);
-      if (d < touchRadius) {
-        return true;
+    socket.emit("move", {
+      x: mouseX / width,
+      y: mouseY / height,
+      inRadius: checkMyDistance(),
+    });
+  }
+
+  function checkMyDistance() {
+    let distanceFromCenter = dist(mouseX, mouseY, width / 2, height / 2);
+    if (distanceFromCenter < (experienceState.partyradius * width) / 2) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function usersTouchingPerceptions() {
+    // how close counts as "touching" (in pixels)
+    let touchRadius = 50;
+
+    // loop over all perception objects
+    for (let per of perceptionsArray) {
+      let px = per.position.x;
+      let py = per.position.y;
+
+      // 1) check ME (local user, uses mouseX/mouseY)
+      let dMe = dist(mouseX, mouseY, px, py);
+      if (dMe < touchRadius) {
+        return true; // someone is touching, we can stop
+      }
+      // 2) check OTHER users (positions from server)
+      for (let id in experienceState.users) {
+        if (id === me) continue; // already checked myself
+
+        const u = experienceState.users[id];
+        const ux = u.x * width; // normalized -> pixels
+        const uy = u.y * height;
+
+        let d = dist(ux, uy, px, py);
+        if (d < touchRadius) {
+          return true;
+        }
       }
     }
+
+    // if we got here, nobody is touching any perception
+    return false;
   }
 
-  // if we got here, nobody is touching any perception
-  return false;
-}
+  // SOCKET EVENTS
 
-// SOCKET EVENTS
-
-/*
+  /*
 this part is where the connection happens between this sketch.js and app.js 
 which then will create a real time connection
 
 */
-// initial full state
-socket.on("init", (data) => {
-  me = data.id;
-  experienceState = data.state;
-  console.log(experienceState);
-});
+  // initial full state
+  socket.on("init", (data) => {
+    me = data.id;
+    experienceState = data.state;
+    console.log(experienceState);
+  });
 
-// someone joined
-socket.on("userJoined", (data) => {
-  experienceState.users[data.id] = data.user;
-});
+  // someone joined
+  socket.on("userJoined", (data) => {
+    experienceState.users[data.id] = data.user;
+  });
 
-// someone left
-socket.on("userLeft", (id) => {
-  delete experienceState.users[id];
-});
+  // someone left
+  socket.on("userLeft", (id) => {
+    delete experienceState.users[id];
+  });
 
-// someone moved
-socket.on("userMoved", (data) => {
-  let id = data.id;
-  if (experienceState.users[id]) {
-    experienceState.users[id].x = data.x;
-    experienceState.users[id].y = data.y;
+  // someone moved
+  socket.on("userMoved", (data) => {
+    let id = data.id;
+    if (experienceState.users[id]) {
+      experienceState.users[id].x = data.x;
+      experienceState.users[id].y = data.y;
+    }
+  });
+
+  // update to farm grid
+  socket.on("partyTime", (value) => {
+    // console.log(data);
+    experienceState.party = value;
+  });
+
+  function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
   }
-});
-
-// update to farm grid
-socket.on("partyTime", (value) => {
-  // console.log(data);
-  experienceState.party = value;
-});
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 }

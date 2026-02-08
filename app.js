@@ -26,24 +26,33 @@ server.listen(port, () => {
   console.log("listening on:", port);
 });
 
-// EXPERIENCE STATE server is the authority
+// EXPERIENCE STATE server is the authority ---- sahred experience state
 let numUsers = 0;
 let experienceState = {
+  //global object held only on the server
   users: {}, // socket.id -> avatar data
+  // {maps each connected socket.id to their state(x,y,color,scale,ratio..etc)}
   partyradius: 0.5,
   party: false,
 };
 
+// handling new connections \
+/* https://socket.io/docs/v3/client-socket-instance/
+https://socket.io/docs/v4/emitting-events/
+https://nodejs.org/docs/latest/api/events.html#events
+socket instance (client-side)
+emitting listening to
+*/
 io.on("connection", (socket) => {
   console.log("user connected:", socket.id);
 
-  // Create user
-  experienceState.users[socket.id] = {
+  // Create user object when joined
+  experienceState.users[socket.id] = { // adds a new entry for this new socket
     x: 0,
     y: 0,
     inRadius: false,
     touching: false,
-    assetNum: 0,
+    assetNum: 0, //which object users are using
     color: Math.floor(Math.random() * 155) + 100,
   };
   numUsers = Object.keys(experienceState.users).length;

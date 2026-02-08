@@ -24,4 +24,4 @@ It seems that the circles are shown between all browsing users to the server.
 
 - when the mouse/circle in browser A touches objects in browser B it calls the part circle to colour in browser A
 - when mouse/circle in browser A or B touches an object of the same browser it calls the circle to party locally.
-  ------->> what needs ot be happening is for the party circle to t
+  ------->> what needs ot be happening is for the party circle
