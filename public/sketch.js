@@ -1,18 +1,3 @@
-// perception objects
-let perceptionsArray = [];
-// -------------------- perception Assets --------------------
-let imagePerception = [];
-let imageFilePerception = [
-  "perception001.gif",
-  "perception002.gif",
-  "perception003.gif",
-  "perception004.gif",
-  "perception005.gif",
-  "perception006.gif",
-  "perception007.gif",
-  "perception008.gif",
-];
-
 const socket = io();
 
 let me = null;
@@ -27,6 +12,21 @@ let experienceState = {
 // throttle mouse updates
 let lastSent = 0;
 const SEND_RATE = 30; // ms (~33 fps)
+
+// perception objects
+let perceptionsArray = [];
+// -------------------- perception Assets --------------------
+let imagePerception = [];
+let imageFilePerception = [
+  "perception001.gif",
+  "perception002.gif",
+  "perception003.gif",
+  "perception004.gif",
+  "perception005.gif",
+  "perception006.gif",
+  "perception007.gif",
+  "perception008.gif",
+];
 
 // -------------------- Preload --------------------
 function preload() {
@@ -115,61 +115,6 @@ function draw() {
   }
 }
 
-// background(200);
-
-// //chatGPt help with the math
-// let touching = usersTouchingPerceptions(); //touching to be called  in the app.js
-
-// if (touching) {
-//   // when any user is touching any perception object
-//   fill(random(255), random(255), random(255)); // or a fixed color if you prefer
-//   noStroke();
-// } else {
-//   stroke(0);
-//   noFill();
-// }
-
-// circle(width / 2, height / 2, width * experienceState.partyradius);
-
-// // draw all users
-// for (let id in experienceState.users) {
-//   const u = experienceState.users[id];
-
-//   if (id === me) {
-//     fill(u.color, 0, 0);
-//     circle(mouseX, mouseY, 70);
-//   } else {
-//     fill(u.color, 0, 0);
-//     circle(u.x * width, u.y * height, 15);
-//   }
-// }
-
-// // perception objects calling
-// for (let per of perceptionsArray) {
-//   // repel from ALL users (me + others)
-//   for (let id in experienceState.users) {
-//     const u = experienceState.users[id];
-
-//     // convert normalized coords to pixels for others
-//     let ux, uy;
-//     if (id === me) {
-//       // my avatar is at my mouse
-//       ux = mouseX;
-//       uy = mouseY;
-//     } else {
-//       ux = u.x * width;
-//       uy = u.y * height;
-//     }
-
-//     per.repelFrom(ux, uy, 50, 2);
-//   }
-
-//   per.separate(perceptionsArray);
-//   per.update();
-//   per.borders();
-//   per.display();
-// }
-
 // SEND MOVEMENT (throttled, i.e. send less often)
 //maybe this is where i need toreplace the circles with the drawings
 function mouseMoved() {
@@ -191,12 +136,6 @@ function mouseMoved() {
   });
 }
 
-//   socket.emit("move", {
-//     x: mouseX / width,
-//     y: mouseY / height,
-//     inRadius: checkMyDistance(),
-//   });
-// }
 
 function checkMyDistance() {
   let distanceFromCenter = dist(mouseX, mouseY, width / 2, height / 2);
@@ -245,8 +184,8 @@ function usersTouchingPerceptions() {
 /*
 this part is where the connection happens between this sketch.js and app.js 
 which then will create a real time connection
-
 */
+
 // initial full state
 socket.on("init", (data) => {
   me = data.id;

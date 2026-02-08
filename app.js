@@ -101,18 +101,6 @@ io.on("connection", (socket) => {
     experienceState.party = isPartytime; // keep state mirror up to date
     io.emit("partyTime", isPartytime);
   });
-  //   let numUsersInRadius = 0;
-  //   for (let id in experienceState.users) {
-  //     let u = experienceState.users[id];
-  //     if (u.inRadius) {
-  //       numUsersInRadius++;
-  //     }
-  //   }
-
-  //   let percentage = numUsersInRadius / numUsers;
-  //   let isPartytime = percentage >= 0.7; // will be a boolean value
-  //   io.emit("partyTime", isPartytime);
-  // });
 
   socket.on("disconnect", () => {
     console.log("user disconnected:", socket.id);

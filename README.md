@@ -13,7 +13,7 @@ https://workshop-2-codepractice.onrender.com
 I firstly tried to make this code interact with sound when objectsa re inside the circle or radious zone. but it turned up more complicated than I thought so I changed the idea to make the objects repel from the circle and to create a netwrok bteween other users the circle will party whenever any user touches the the objects.
 
 øøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøø
-I have to:
+frist draft of i have to:
 Figure out how to conenct app.js witht the sketch so users can share the same mvoement of the objects.
 The object are very slow on mobile devices
 the circle is not sharing the aprty on different users
@@ -24,4 +24,15 @@ It seems that the circles are shown between all browsing users to the server.
 
 - when the mouse/circle in browser A touches objects in browser B it calls the part circle to colour in browser A
 - when mouse/circle in browser A or B touches an object of the same browser it calls the circle to party locally.
-  ------->> what needs ot be happening is for the party circle
+
+øøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøøø
+second draft of i have to:
+the problem is nearly fixed, spellings as usual and variables and conts not in the right order, long story short. it is ntworking between differentuers browsers for now. what i have to do is:
+
+- clean up code
+- figure out how to broadcast objects movement to all users
+
+# Workshop-2-CodePractice Forum explanation
+
+the plan was to make each user bounce objects then parytime would happen, but currenlty the usrs can only bounce other user objects without knwoing that they are actualy bouncing the other users object. I'm just digging a deeper into chaos, I will leave it for now.
+![alt text](image.png)
